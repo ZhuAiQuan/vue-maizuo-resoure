@@ -47,8 +47,9 @@ export const getMaps = (cityId) => {
   })
 }
 // 获取影院地址
-export const getWays = cityId => {
-  return axios.get(`https://m.maizuo.com/gateway?cityId=${cityId}&ticketFlag=1&k=4162741`, {
+// ticketFlag = 1 app订票 =2 前台 =0所有的
+export const getWays = (cityId, ticker = 0) => {
+  return axios.get(`https://m.maizuo.com/gateway?cityId=${cityId}&ticketFlag=${ticker}&k=4162741`, {
     headers: {
       'X-Client-Info': `{"a":"3000","ch":"1002","v":"5.0.4","e":"1586063131390842026034","bc":${cityId}}`,
       'X-Host': 'mall.film-ticket.cinema.list'
@@ -70,6 +71,15 @@ export const getCinemasHot = ({ cinemaId, cityId }) => {
     headers: {
       'X-Client-Info': `{"a":"3000","ch":"1002","v":"5.0.4","e":"1586063131390842026034","bc":${cityId}}`,
       'X-Host': 'mall.film-ticket.film.cinema-show-film'
+    }
+  })
+}
+// 离你最近
+export const getLast = (id) => {
+  return axios.get(`https://m.maizuo.com/gateway?cityId=${id}&k=8035208`, {
+    headers: {
+      'X-Client-Info': `{"a":"3000","ch":"1002","v":"5.0.4","e":"1586063131390842026034","bc":${id},"lo":"0","la":"0"}`,
+      'X-Host': 'mall.film-ticket.cinema.recommend'
     }
   })
 }

@@ -51,5 +51,10 @@ export default [
     path: '/detail',
     name: 'detail',
     component: () => import('../views/cinemas/cinemasDetails/cinemasDetails.vue')
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: () => import('../views/cinemas/search/search.vue')
   }
 ]
