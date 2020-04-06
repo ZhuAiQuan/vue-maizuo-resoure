@@ -50,7 +50,7 @@ export default {
   methods: {
     chooseCity (item) {
       this.$store.commit('GetCity', item)
-      this.$router.push('/')
+      this.$router.go(-1)
     },
     resetData (data) {
       let list = [

@@ -41,5 +41,15 @@ export default [
     path: '/local',
     name: 'local',
     component: () => import('../views/local/local.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/login/login.vue')
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    component: () => import('../views/cinemas/cinemasDetails/cinemasDetails.vue')
   }
 ]

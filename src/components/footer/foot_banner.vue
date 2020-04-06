@@ -60,13 +60,12 @@ export default {
 .footer{
   display: flex;
   flex-wrap: wrap;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   background: #fff;
   border-top: 1px solid #ededed;
   box-sizing: border-box;
-  margin-bottom: .1rem;
   .nav{
     width: 25%;
     text-align: center;
@@ -75,12 +74,13 @@ export default {
     .text{
       font-size: .3rem;
       position: absolute;
-      top: .9rem;
+      top: 30px;
       left: 50%;
       transform: translate(-50%);
     }
     /deep/.van-icon{
-      top: -.2rem;
+      top: 0;
+      margin-bottom: 20px;
     }
   }
 }

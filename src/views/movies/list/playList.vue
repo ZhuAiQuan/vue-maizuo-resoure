@@ -49,6 +49,7 @@ export default {
 
 <style lang="less" scoped>
 .play-list{
+  background: #ffffff;
   .films-content{
     display: flex;
     padding: 15px;

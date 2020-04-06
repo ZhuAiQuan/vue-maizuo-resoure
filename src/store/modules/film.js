@@ -2,8 +2,10 @@ export default {
   state: {
     photos: [],
     city: {
-      cityId: 440300
-    }
+      cityId: 440300,
+      name: '深圳'
+    },
+    cinamas: {}
   },
   mutations: {
     GetPhotos (state, arr) {
@@ -11,6 +13,9 @@ export default {
     },
     GetCity (state, data) {
       state.city = data
+    },
+    GetCinemas (state, data) {
+      state.cinamas = data
     }
   },
   getters: {},
