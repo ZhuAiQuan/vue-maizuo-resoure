@@ -9,7 +9,7 @@
     <van-search v-model="keyword" placeholder="请输入搜索关键词" />
     <div class="dialog">
       <span class="hot-title">GPS定位你所在的城市</span>
-      <div class="hot-title">
+      <div class="hot-title location-btn">
         <van-tag size="large">定位</van-tag>
       </div>
       <span class="hot-title">热门城市</span>
@@ -208,6 +208,8 @@ export default {
     .hot-city{
       display: flex;
       flex-wrap: wrap;
+      background: #fff;
+      padding-top: 15px;
       /deep/.van-tag--large{
         margin: 0 15px;
         padding: 2px 30px;
@@ -227,6 +229,11 @@ export default {
         background: #f4f4f4;
         color: #333;
       }
+    }
+    .location-btn{
+      background: #fff;
+      margin: 0;
+      padding: 10px 0 10px 15px;
     }
   }
 }
