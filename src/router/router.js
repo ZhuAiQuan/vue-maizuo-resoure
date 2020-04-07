@@ -8,24 +8,36 @@ export default [
       {
         path: '/films',
         name: 'films',
-        component: () => import('../views/movies/movies.vue')
+        component: () => import('../views/movies/movies.vue'),
+        meta: {
+          title: '电影'
+        }
       },
       {
         path: '/mine',
         name: 'mine',
-        component: () => import('../views/mine/mine.vue')
+        component: () => import('../views/mine/mine.vue'),
+        meta: {
+          title: '我的'
+        }
       },
       {
         path: '/cinemas',
         name: 'cinemas',
-        component: () => import('../views/cinemas/cinemas.vue')
+        component: () => import('../views/cinemas/cinemas.vue'),
+        meta: {
+          title: '影院'
+        }
       }
     ]
   },
   {
     path: '/info',
     name: 'info',
-    component: () => import('../views/info/info.vue')
+    component: () => import('../views/info/info.vue'),
+    meta: {
+      title: '电影资讯'
+    }
   },
   {
     path: '/filminfo/:filmId',

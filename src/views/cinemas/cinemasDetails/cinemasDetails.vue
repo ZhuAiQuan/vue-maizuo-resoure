@@ -21,18 +21,20 @@
     </div>
     <div class="film-bg">
       <div class="bg-blur" :style="{ 'background-image': bgImg }"></div>
-      <div class="film-banner" v-for="(item, i) in hotList" :key="i">
+      <div class="film-banner">
         <van-image
+           v-for="(item, i) in hotList"
+           :key="i"
           :src="item.poster"
-          width="81.75px"
-          height="100%"
+          @click="getInfo(item)"
+          :class="{ 'film-active': item.filmId === temp.filmId }"
         />
       </div>
     </div>
     <div class="film-info" @click="toPath">
       <div class="title">
-        <div class="name"><span class="title">{{ hotList[0].name }}</span><span class="grade">{{ hotList[0].grade }}分</span></div>
-        <div class="type">{{ hotList[0].category }} | {{ hotList[0].runtime }}分钟 | {{ hotList[0].director }}</div>
+        <div class="name"><span class="title">{{ temp.name }}</span><span class="grade">{{ temp.grade }}分</span></div>
+        <div class="type">{{ temp.category }} | {{ temp.runtime }}分钟 | {{ temp.director }}</div>
       </div>
       <div class="icon">
         <van-icon name="arrow" size="16px" />
@@ -67,7 +69,8 @@ export default {
       },
       show: false,
       bgImg: 'url(https://static.maizuo.com/pc/v5/usr/movie/edb950316ac6aca7a9a71309b56bfb7f.jpg)',
-      hotList: []
+      hotList: [],
+      temp: {}
     }
   },
   mounted () {
@@ -75,6 +78,12 @@ export default {
   },
   methods: {
     getCinemas () {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0
+      });
       getCinemasInfo({
         cinemasId: this.$store.state.film.cinamas.cinemaId,
         cityId: this.$store.state.film.city.cityId
@@ -82,6 +91,7 @@ export default {
         if (res.status === 200) {
           this.cinemas.list = res.data.data.cinema
           this.getHot()
+          this.$toast.clear()
         } else {
           this.cinemas.list = []
         }
@@ -97,13 +107,18 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           this.hotList = res.data.data.films
+          this.temp = this.hotList[0]
           this.bgImg = `url(${res.data.data.films[0].poster})`
         }
       })
     },
     // 这里没做v-for循环拿到数据 后续补充 暂时就当作只有一个数据
     toPath () {
-      this.$router.push(`/filminfo/${this.hotList[0].filmId}`)
+      this.$router.push(`/filminfo/${this.temp.filmId}`)
+    },
+    getInfo (item) {
+      this.temp = item
+      this.bgImg = `url(${item.poster})`
     }
   }
 }
@@ -162,8 +177,15 @@ export default {
     }
     .film-banner{
       height: 100%;
+      overflow-x: auto;
       /deep/.van-image{
         margin-right: 16px;
+        margin-top: 10px;
+        width: 80px;
+      }
+      .film-active{
+        width: 90px;
+        height: 100%;
       }
     }
   }

@@ -168,13 +168,21 @@ export default {
       this.cityDts = list
     },
     getData () {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0
+      });
       getMaps(this.$store.state.film.city.cityId).then(res => {
         if (res.status === 200) {
           this.resetData(res.data.data.cities)
           this.hotCity = res.data.data.cities.filter(item => item.isHot)
+          this.$toast.clear()
         } else {
           this.hotCity = []
           this.cityDts = []
+          this.$toast.clear()
         }
       })
     }
@@ -222,6 +230,7 @@ export default {
       font-size: 13px;
       color: #797d82;
       margin-bottom: 10px;
+      margin-top: 10px;
       text-align: left;
       display: block;
       margin-left: 15px;

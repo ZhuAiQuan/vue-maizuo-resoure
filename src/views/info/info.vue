@@ -13,10 +13,16 @@ export default {
   },
   methods: {
     getList () {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0
+      });
       getInfo().then(res => {
         if (res.status === 200) {
-          console.log(res.data.data.data)
           this.content = res.data.data.data.content
+          this.$toast.clear()
         }
       })
     }

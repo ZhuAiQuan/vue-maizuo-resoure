@@ -64,6 +64,12 @@ export default {
   },
   methods: {
     getData () {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0
+      });
       getWays(this.$store.state.film.city.cityId, this.search.app).then(res => {
         if (res.status === 200) {
           this.cinemas = res.data.data.cinemas
@@ -77,6 +83,7 @@ export default {
             const i = this.search.cityId.districtId
             this.cinemas = this.cinemas.filter(item => item.districtId === i)
           }
+          this.$toast.clear()
         } else {
           this.cinemas = []
           this.tempQuery = []

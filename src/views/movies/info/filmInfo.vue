@@ -66,15 +66,25 @@ export default {
   },
   methods: {
     getInfo (formId) {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0
+      });
       filmInfo({ filmId: formId, cityId: this.$store.state.film.city.cityId }).then(res => {
         if (res.status === 200) {
           res.data.data.film.time = new Date(parseInt(res.data.data.film.premiereAt) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ')
           this.film = res.data.data.film
           this.$store.commit('GetPhotos', res.data.data.film.photos)
+          this.$toast.clear()
         } else {
           this.film = {}
           this.$store.commit('GetPhotos', [])
+          this.$toast.clear()
         }
+      }).catch(() => {
+        this.$toast.clear()
       })
     },
     seeMore (i) {

@@ -70,12 +70,22 @@ export default {
       })
     },
     getList (name = 1) {
+      this.$toast.loading({
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 0
+      });
       PlayList({ type: name, cityId: this.$store.state.film.city.cityId }).then(res => {
         if (res.status === 200) {
           this.films = res.data.data.films
+          this.$toast.clear()
         } else {
           this.films = []
+          this.$toast.clear()
         }
+      }).catch(err => {
+        this.$toast.clear()
       })
     }
   },
