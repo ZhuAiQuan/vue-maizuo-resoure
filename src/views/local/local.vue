@@ -6,30 +6,44 @@
       left-arrow
       @click-left="$router.go(-1)"
     />
-    <van-search v-model="keyword" placeholder="请输入搜索关键词" />
-    <div class="dialog">
-      <span class="hot-title">GPS定位你所在的城市</span>
-      <div class="hot-title location-btn">
-        <van-tag size="large">定位</van-tag>
-      </div>
-      <span class="hot-title">热门城市</span>
-      <div class="hot-city">
-        <van-tag size="large" v-for="item in hotCity" :key="item.cityId" @click="chooseCity(item)">{{ item.name }}</van-tag>
-      </div>
-    </div>
-    <van-index-bar class="indexBar" :sticky="false" highlight-color="#AE853A">
-      <van-index-anchor v-for="(item,index) in cityDts" :key="index" :index="item.initial">
-        <div class="city-index">
-          <span class="indexWord">{{item.initial}}</span>
+    <van-search placeholder="请输入搜索关键词"  v-if="inputState" @focus="inputState = false"/>
+    <van-search
+      v-else
+      v-model.trim="keyword"
+      show-action
+      placeholder="请输入搜索关键词"
+      @cancel="onCancel"
+      @input="onInputVal"
+      @blur="checkKey"
+    />
+    <template v-if="!keyword.length">
+      <div class="dialog">
+        <span class="hot-title">GPS定位你所在的城市</span>
+        <div class="hot-title location-btn">
+          <van-tag size="large" @click="getGeo">定位</van-tag>
         </div>
-        <van-cell
-          @click="chooseCity(citem)"
-          v-for="(citem,cindex) in item.list"
-          :key="cindex"
-          :title="citem.name"
-        />
-      </van-index-anchor>
-    </van-index-bar>
+        <span class="hot-title">热门城市</span>
+        <div class="hot-city">
+          <van-tag size="large" v-for="item in hotCity" :key="item.cityId" @click="chooseCity(item)">{{ item.name }}</van-tag>
+        </div>
+      </div>
+      <van-index-bar class="indexBar" :sticky="false" highlight-color="#AE853A">
+        <van-index-anchor v-for="(item,index) in cityDts" :key="index" :index="item.initial">
+          <div class="city-index">
+            <span class="indexWord">{{item.initial}}</span>
+          </div>
+          <van-cell
+            @click="chooseCity(citem)"
+            v-for="(citem,cindex) in item.list"
+            :key="cindex"
+            :title="citem.name"
+          />
+        </van-index-anchor>
+      </van-index-bar>
+    </template>
+    <template v-else>
+      <van-cell :title="item.name" v-for="(item, i) in tempCity" :key="i" @click="chooseCity(item)"/>
+    </template>
   </div>
 </template>
 
@@ -44,7 +58,10 @@ export default {
     return {
       cityDts: [],
       hotCity: [],
-      keyword: ''
+      keyword: '',
+      tempCity: [],
+      firstArr: [],
+      inputState: true
     }
   },
   methods: {
@@ -178,13 +195,31 @@ export default {
         if (res.status === 200) {
           this.resetData(res.data.data.cities)
           this.hotCity = res.data.data.cities.filter(item => item.isHot)
+          this.firstArr = res.data.data.cities
           this.$toast.clear()
         } else {
           this.hotCity = []
           this.cityDts = []
+          this.tempCity = []
+          this.firstArr = []
           this.$toast.clear()
         }
       })
+    },
+    onCancel () {
+      this.inputState = true
+    },
+    onInputVal (val) {
+      this.tempCity = this.firstArr
+      this.tempCity = this.tempCity.filter(item => item.name.indexOf(val) > -1 || item.pinyin.indexOf(val) > -1)
+    },
+    checkKey () {
+      if (!this.keyword.length) {
+        this.inputState = true
+      }
+    },
+    getGeo () {
+      this.$toast('对不起，暂时无法获取定位信息！\n建议您手动选择')
     }
   },
   mounted () {
@@ -245,5 +280,8 @@ export default {
       padding: 10px 0 10px 15px;
     }
   }
+}
+/deep/.van-cell{
+  text-align: left;
 }
 </style>

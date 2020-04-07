@@ -79,7 +79,7 @@ export default {
       })
     },
     filterData (val) {
-      if (val === '') this.all = this.temp
+      this.all = this.temp
       this.all = this.all.filter(item => item.name.indexOf(val) > -1)
     },
     resetData () {
