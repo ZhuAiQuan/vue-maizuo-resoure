@@ -6,12 +6,12 @@
       left-arrow
       @click-left="$router.go(-1)"
     />
-    <van-search placeholder="请输入搜索关键词"  v-if="inputState" @focus="inputState = false"/>
+    <van-search placeholder="输入城市或者拼音"  v-if="inputState" @focus="inputState = false"/>
     <van-search
       v-else
       v-model.trim="keyword"
       show-action
-      placeholder="请输入搜索关键词"
+      placeholder="输入城市或者拼音"
       @cancel="onCancel"
       @input="onInputVal"
       @blur="checkKey"
@@ -42,7 +42,18 @@
       </van-index-bar>
     </template>
     <template v-else>
-      <van-cell :title="item.name" v-for="(item, i) in tempCity" :key="i" @click="chooseCity(item)"/>
+      <template v-if="tempCity.length">
+        <van-cell :title="item.name" v-for="(item, i) in tempCity" :key="i" @click="chooseCity(item)"/>
+      </template>
+      <template v-else>
+        <div class="no-search-city">
+          <van-image
+            :src="cityPic"
+            width="90px"
+          />
+          <div class="text">没有找到匹配的城市</div>
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -53,6 +64,7 @@ import Vue from 'vue';
 import { IndexBar, IndexAnchor } from 'vant';
 Vue.use(IndexBar);
 Vue.use(IndexAnchor);
+import cityPic from '../../assets/images/city.png'
 export default {
   data () {
     return {
@@ -61,7 +73,8 @@ export default {
       keyword: '',
       tempCity: [],
       firstArr: [],
-      inputState: true
+      inputState: true,
+      cityPic
     }
   },
   methods: {
@@ -283,5 +296,13 @@ export default {
 }
 /deep/.van-cell{
   text-align: left;
+}
+.no-search-city{
+  text-align: center;
+  padding-top: 100px;
+  .text{
+    color: #bdc0c5;
+    font-size: 14px;
+  }
 }
 </style>

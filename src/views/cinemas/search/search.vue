@@ -21,27 +21,40 @@
       </ul>
     </div>
     <div v-else>
-      <van-cell v-for="(item, i) in all" :key="i" @click="toDetail(item)">
-      <!-- 使用 title 插槽来自定义标题 -->
-      <template #title>
-        <span class="cinemas-title">{{ item.name }}</span>
+      <template v-if="all.length">
+        <van-cell v-for="(item, i) in all" :key="i" @click="toDetail(item)">
+          <!-- 使用 title 插槽来自定义标题 -->
+          <template #title>
+            <span class="cinemas-title">{{ item.name }}</span>
+          </template>
+          <template #default>
+            <div class="cinemas-right">
+              <div class="pri"><span class="fh">￥</span>{{ item.lowPrice/100 }}<span class="fh"> 起</span></div>
+              <div class="location">距离未知</div>
+            </div>
+          </template>
+          <template #label>
+            <span class="custom-address">{{ item.address }}</span>
+          </template>
+        </van-cell>
       </template>
-      <template #default>
-        <div class="cinemas-right">
-          <div class="pri"><span class="fh">￥</span>{{ item.lowPrice/100 }}<span class="fh"> 起</span></div>
-          <div class="location">距离未知</div>
+      <template v-else>
+        <div class="no-search-city">
+          <van-image
+            :src="cinemasPic"
+            width="90px"
+          />
+          <div class="text">没有找到匹配的影院</div>
+          <div class="text last-text">提示：仅支持搜索“影院”，建议您检查输入的影院名称是否有误？ </div>
         </div>
       </template>
-      <template #label>
-        <span class="custom-address">{{ item.address }}</span>
-      </template>
-    </van-cell>
     </div>
   </div>
 </template>
 
 <script>
 import { getLast, getWays } from '../../../api/request.js'
+import cinemasPic from '../../../assets/images/cinemas.png'
 export default {
   name: 'search',
   data () {
@@ -49,7 +62,8 @@ export default {
       search: '',
       cinemas: [],
       all: [],
-      temp: []
+      temp: [],
+      cinemasPic
     }
   },
   methods: {
@@ -154,6 +168,18 @@ export default {
       font-size: 11px;
       color: #797d82;
       margin-top: 5px;
+    }
+  }
+  .no-search-city{
+    text-align: center;
+    padding-top: 100px;
+    background: rgb(244, 244, 244);
+    .text{
+      color: #bdc0c5;
+      font-size: 14px;
+    }
+    .last-text{
+      padding: 0 82.5px;
     }
   }
 }
